@@ -22,7 +22,6 @@ void adminMenu(vector<Student> &students, vector<Book> &books){
 
     cout << endl << "Enter your choice: ";
     cin >> inpAdmin;
-
     switch(inpAdmin){
         case 1:
             studDisplayAll(students);
