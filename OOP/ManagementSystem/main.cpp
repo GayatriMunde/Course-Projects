@@ -66,13 +66,12 @@ void adminMenu(vector<Student> &students, vector<Book> &books){
             addStudent(students);
             break;
         case 11:
-            mainMenu(students, books);
-            break;
+            return;
         default:
             return;
     }
 
-    while (inpAdmin < 11){
+    if(inpAdmin < 11){
         adminMenu(students, books);
     }
 }
@@ -212,12 +211,11 @@ void mainMenu(vector<Student> &students, vector<Book> &books){
             break;
         case 4:
             return;
-            break;
         default:
             cout << "Enter valid number" << endl;
     }
 
-    while(inpMenu < 4){
+    if(inpMenu < 4){
         mainMenu(students, books);
     }
 }
