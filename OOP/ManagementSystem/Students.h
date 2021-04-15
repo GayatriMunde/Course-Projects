@@ -51,6 +51,10 @@ class Student{
         } 
         studContact = num;
     }
+
+    void setBooks(vector<int> bookIds){
+        books.assign(bookIds.begin(), bookIds.end());
+    }
   
     void getDetails(){
         cout << endl;
@@ -86,7 +90,6 @@ void addStudent(vector<Student> &students){
     stud.addStudent();
     students.push_back(stud);
 
-//--->
     char chr;
     cout << "Do you want to add more? (Y/N)" << endl;
     cin >> chr;
@@ -175,3 +178,4 @@ void modifyStudent(int id, vector<Student> &students){
         modifyStudent(id, students);
     }
 }
+

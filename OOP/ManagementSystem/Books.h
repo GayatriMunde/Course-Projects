@@ -62,16 +62,11 @@ class Book{
     }
 };
 
-
-
-
-
 void addBook(vector<Book> &books){
     Book tempBook;
     tempBook.addBook();
     books.push_back(tempBook);
 
-//--->
     char chr;
     cout << "Do you want to add more? (Y/N)" << endl;
     cin >> chr;
@@ -87,29 +82,12 @@ vector<Book> createBook(){
     return books;
 }
 
-
-
-template <typename T>
-int getIndex(int id, vector<T> temp){
-    for (int i = 0; i < temp.size(); i++){
-        if (temp[i].getId() == id){
-            return i;
-        }
-    }
-    cout << "Invalid id!" << endl;
-    return -1;
-}
-
-
-
 void bookDisplayAll(vector<Book> books){
     for (int i = 0; i < books.size(); i++){
         books[i].getDetails();
     }   
     cout << endl;
 }
-
-
 
 void displayBook(int id, vector<Book> books){
     int index = getIndex(id, books);
@@ -118,8 +96,6 @@ void displayBook(int id, vector<Book> books){
     else
         books[index].getDetails();
 }
-
-
 
 void removeBook(int id, vector<Book> &books){
     int index = getIndex(id, books);
@@ -131,8 +107,6 @@ void removeBook(int id, vector<Book> &books){
     cout << "Book with id " << id << " deleted successfully!" << endl;
     cout << endl;
 }
-
-
 
 void modifyBookName(Book &book){
     string bName;

@@ -1,8 +1,11 @@
 #include<bits/stdc++.h>
+#include "Structs.h"
 #include "Books.h"
 #include "Students.h"
 
 using namespace std;
+
+void mainMenu(vector<Student> &students, vector<Book> &books);
 
 void adminMenu(vector<Student> &students, vector<Book> &books){
     int inpAdmin, id;
@@ -22,6 +25,7 @@ void adminMenu(vector<Student> &students, vector<Book> &books){
 
     cout << endl << "Enter your choice: ";
     cin >> inpAdmin;
+
     switch(inpAdmin){
         case 1:
             studDisplayAll(students);
@@ -62,19 +66,84 @@ void adminMenu(vector<Student> &students, vector<Book> &books){
             addStudent(students);
             break;
         case 11:
-            return;
+            mainMenu(students, books);
+            break;
         default:
             return;
     }
-
-    if (inpAdmin == 11)
-        return;
 
     while (inpAdmin < 11){
         adminMenu(students, books);
     }
 }
 
+void bookIssue(vector<Student> &students, vector<Book> &books){
+    int studId, bookId, index; 
+    cout << "Enter student Id: ";
+    cin >> studId;
+
+    index = getIndex(studId, students);
+    if (index == -1){
+        cout << endl << "Enter Valid Student Id!" << endl;
+        return;
+    }
+
+    cout << "Enter book Id: ";
+    cin >> bookId;
+    if (getIndex(bookId, books) == -1){
+        cout << endl << "Enter Valid book Id!" << endl;
+        return;
+    }
+
+    vector<int> tempBooks = students[index].getBooks();
+    tempBooks.push_back(bookId);
+    students[index].setBooks(tempBooks);
+
+    char chr;
+    cout << "Do you want to add more? (Y/N)" << endl;
+    cin >> chr;
+    if (chr == 'Y' || chr == 'y'){
+        bookIssue(students, books);
+    }
+}
+
+void bookRemove(vector<Student> &students, vector<Book> &books){
+    int studId, bookId, index; 
+    cout << "Enter student Id: ";
+    cin >> studId;
+
+    index = getIndex(studId, students);
+    if (index == -1){
+        cout << endl << "Enter Valid Student Id!" << endl;
+        return;
+    }
+
+    cout << "Enter book Id: ";
+    cin >> bookId;
+    if (getIndex(bookId, books) == -1){
+        cout << endl << "Enter Valid book Id!" << endl;
+        return;
+    }
+
+    vector<int> tempBooks = students[index].getBooks();
+    for(int i = 0; i < tempBooks.size(); i++){
+        if(bookId == tempBooks[i]){   
+            tempBooks.erase(tempBooks.begin() + i);  
+        }
+    }
+
+    students[index].setBooks(tempBooks);
+
+    char chr;
+    cout << "Do you want to add more? (Y/N)" << endl;
+    cin >> chr;
+    if (chr == 'Y' || chr == 'y'){
+        bookIssue(students, books);
+    }
+}
+
+
+/*
 void addSbook(Student &students, int book_id){
     vector<int> books = students.getBooks();
     books.push_back(book_id);
@@ -118,7 +187,7 @@ void bookRemove(vector<Student>&students){
         return;
     else
         removeSbook(students[index], bookId);
-}
+}*/
 
 void mainMenu(vector<Student> &students, vector<Book> &books){
     int inpMenu;
@@ -133,15 +202,17 @@ void mainMenu(vector<Student> &students, vector<Book> &books){
     cin >> inpMenu;
     switch(inpMenu){
         case 1:
-            bookIssue(students);
+            bookIssue(students, books);
             break;
         case 2:
-            bookRemove(students); 
+            bookRemove(students, books); 
             break;
         case 3:
             adminMenu(students, books);
+            break;
         case 4:
             return;
+            break;
         default:
             cout << "Enter valid number" << endl;
     }
@@ -152,6 +223,7 @@ void mainMenu(vector<Student> &students, vector<Book> &books){
 }
 
 int main(){
+    cout << endl << "Create the database!" << endl;
     vector<Book> books = createBook();
     vector<Student> students = createStud();
     mainMenu(students, books);
