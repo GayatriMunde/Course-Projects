@@ -23,7 +23,6 @@ class Book{
         bookName = bName;
         
         cout << "Enter The Author's Name: ";
-        cin.ignore();
         getline(cin, aName);
         authName = aName;
       

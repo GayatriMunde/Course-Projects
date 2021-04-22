@@ -142,52 +142,6 @@ void bookRemove(vector<Student> &students, vector<Book> &books){
 }
 
 
-/*
-void addSbook(Student &students, int book_id){
-    vector<int> books = students.getBooks();
-    books.push_back(book_id);
-}
-
-void removeSbook(Student &students, int book_id){   
-    vector <int> books = students.getBooks();
-
-    for(int i=0;i<books.size();i++){
-        if(book_id == books[i]){   
-            books.erase(books.begin() + i);  
-        }
-    }
-}
-
-void bookIssue(vector<Student> &students){  
-    int studId, bookId; 
-    cout << "Enter student Id: ";
-    cin >> studId;
-
-    cout << "Enter book Id: ";
-    cin >> bookId;
-
-    int index = getIndex(studId, students);
-    if (index < 0)  
-        return;
-    else
-        addSbook(students[index], bookId);
-}
-
-void bookRemove(vector<Student>&students){   
-    int studId, bookId; 
-    cout << "Enter student Id: ";
-    cin >> studId;
-
-    cout << "Enter book Id: ";
-    cin >> bookId;
-
-    int index = getIndex(studId, students);
-    if (index < 0)  
-        return;
-    else
-        removeSbook(students[index], bookId);
-}*/
-
 void mainMenu(vector<Student> &students, vector<Book> &books){
     int inpMenu;
     cout << endl;

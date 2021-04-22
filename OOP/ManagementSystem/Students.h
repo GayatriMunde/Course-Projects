@@ -24,7 +24,6 @@ class Student{
         studName = name;
 
         cout << "Enter The branch: ";
-        cin.ignore();
         getline(cin, branch);
         studBranch = branch;
         
