@@ -108,6 +108,22 @@ class BST{
         return false;
     }
 
+    T getMaximum(){
+        struct TreeNode<T> *temp = root;
+        while(temp->right){
+            temp = temp->right;
+        }
+        return temp->val;
+    }
+
+    T getMinimum(){
+        struct TreeNode<T> *temp = root;
+        while(temp->left){
+            temp = temp->left;
+        }
+        return temp->val;
+    }
+
     void display(vector<T> values){
         cout << "Vector: ";
         for (int i = 0; i < values.size(); i++){
@@ -141,6 +157,20 @@ int main(){
     bst.insert(a);
     bst.displayBST();
     cout << "Height: " << bst.getHeight(bst.root) << endl;
+    cout << "Minimum: " << bst.getMinimum() << endl;
+    cout << "Maximum: " << bst.getMaximum() << endl;
+
+    cout << endl;
+
+    vector<char> vals = {'a', 'c', 'h', 'j', 'k', 'l', 'o'};
+    BST<char> bst2(vals);
+    bst2.displayBST();
+    vector<char> toInsert = {'b', 'z', 'm'};
+    bst2.insert(toInsert);
+    bst2.displayBST();
+    cout << "Height: " << bst2.getHeight(bst2.root) << endl;
+    cout << "Minimum: " << bst2.getMinimum() << endl;
+    cout << "Maximum: " << bst2.getMaximum() << endl;
 
     cout << endl;
 
@@ -151,6 +181,8 @@ int main(){
     bst3.insert(addOn);
     bst3.displayBST();
     cout << "Height: " << bst3.getHeight(bst3.root) << endl;
+    cout << "Minimum: " << bst3.getMinimum() << endl;
+    cout << "Maximum: " << bst3.getMaximum() << endl;
 
     
     return 0;
