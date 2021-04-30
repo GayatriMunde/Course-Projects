@@ -35,13 +35,56 @@ struct _clients_b {
 _clients_b clients[MAX_CLIENTS];
 
 
-void start_server();
+void start_server() {
+	int wsaResult, i = 1;
+	WSADATA wsaData;
+
+	server.sin_family = AF_INET;
+	server.sin_addr.s_addr = INADDR_ANY;
+	server.sin_port = htons(DEFAULT_PORT);
+
+	wsaResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	
+	if (wsaResult != 0) {
+		cout << "WSAStartup failed with error: " << wsaResult << endl;
+	}
+	cout << "Version: " << wsaData.wVersion << endl;
+	cout << "Description:" << wsaData.szDescription << endl;
+	cout << "Status: " << wsaData.szSystemStatus << endl;
+
+	server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (server_socket == INVALID_SOCKET) {
+		cout << "socket failed with error: " << WSAGetLastError() << endl;
+		WSACleanup();
+	}
+	cout << "Socket creation done Sucessfuly" << endl;
+
+	wsaResult = bind(server_socket, (sockaddr*)&server, sizeof(server));
+	if (wsaResult == SOCKET_ERROR) {
+		cout << "bind failed with error: " << WSAGetLastError() << endl;
+		closesocket(server_socket);
+		WSACleanup();
+	}
+	cout << "Binding Sucessful!" << endl;
+	
+	wsaResult = listen(server_socket, MAX_CLIENTS);
+	unsigned long b = 1;
+	
+	ioctlsocket(server_socket, FIONBIO, &b);
+
+	if (wsaResult == SOCKET_ERROR) {
+		cout << "listen failed with error: " << WSAGetLastError() << endl;
+		closesocket(server_socket);
+		WSACleanup();
+	}
+}
 
 void ChatServer() {
 	cout << "Server starting..." << endl;
 	start_server();
 
-	printf("Accepting Clients.....\n");
+	cout << endl;
+	cout << "Accepting Clients....." << endl;
 
 	while (active) {
 		len = sizeof(server);
@@ -76,7 +119,7 @@ void ChatServer() {
 						} 
 					}
 					else if (receiveres == 0 || strcmp(recvbuf,"disconnect") == 0) {
-						cout << "Client ["<<cc<<"disconnected." << endl;
+						cout << "Client ["<< cc << "] disconnected." << endl;
 						clients[cc].connected = FALSE;
 						clients_connected--;
 					}
@@ -87,48 +130,6 @@ void ChatServer() {
 
 	closesocket(server_socket);
 	WSACleanup();
-}
-
-void start_server() {
-	int wsaresult, i = 1;
-	WSADATA wsaData;
-
-	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = INADDR_ANY;
-	server.sin_port = htons(DEFAULT_PORT);
-
-	wsaresult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	
-	if (wsaresult != 0) {
-		printf("WSAStartup failed with error: %d\n", wsaresult);
-	}
-	printf("\nVersion:%d\nDescription:%s\nStatus:%s\n",wsaData.wVersion,wsaData.szDescription,wsaData.szSystemStatus);
-
-	server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (server_socket == INVALID_SOCKET) {
-		printf("socket failed with error: %ld\n", WSAGetLastError());
-		WSACleanup();
-	}
-	printf("Socket creation done Sucessfuly\n");
-
-	wsaresult = bind(server_socket, (sockaddr*)&server, sizeof(server));
-	if (wsaresult == SOCKET_ERROR) {
-		printf("bind failed with error: %d\n", WSAGetLastError());
-		closesocket(server_socket);
-		WSACleanup();
-	}
-	printf("Binding Sucessful!!\n");
-	
-	wsaresult = listen(server_socket, MAX_CLIENTS);
-	unsigned long b = 1;
-	
-	ioctlsocket(server_socket, FIONBIO, &b);
-
-	if (wsaresult == SOCKET_ERROR) {
-		printf("listen failed with error: %d\n", WSAGetLastError());
-		closesocket(server_socket);
-		WSACleanup();
-	}
 }
 
 void ChatClient(){
@@ -145,9 +146,12 @@ void ChatClient(){
 
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != 0) {
-		printf("WSAStartup failed with error: %d\n", iResult);
+		cout << "WSAStartup failed with error: " << wsaResult << endl;
 	}
-	printf("\nVersion:%d\nDescription:%s\nStatus:%s\n", wsaData.wVersion, wsaData.szDescription, wsaData.szSystemStatus);
+	cout << "Version: " << wsaData.wVersion << endl;
+	cout << "Description:" << wsaData.szDescription << endl;
+	cout << "Status: " << wsaData.szSystemStatus << endl;
+
 	ZeroMemory(&hints, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
@@ -155,7 +159,7 @@ void ChatClient(){
 
 	iResult = getaddrinfo("localhost", DEFAULT_PORT_C, &hints, &result);
 	if (iResult != 0) {
-		printf("getaddrinfo failed with error: %d\n", iResult);
+		cout << "getaddrinfo failed with error: " << iResult << endl;
 		WSACleanup();
 	}
 
@@ -163,7 +167,7 @@ void ChatClient(){
 		ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
 		if (ConnectSocket == INVALID_SOCKET)
 		{
-			printf("socket failed with error: %ld\n", WSAGetLastError());
+			cout << "socket failed with error: " << WSAGetLastError() << endl;
 			WSACleanup();
 		}
 
@@ -180,18 +184,18 @@ void ChatClient(){
 	freeaddrinfo(result);
 	if (ConnectSocket == INVALID_SOCKET)
 	{
-		printf("Unable to connect to server!\n");
+		cout << "Unable to connect to server!" << endl;
 		closesocket(ConnectSocket);
 		WSACleanup();
 	}
 	else
 	{
-		printf("\nSuccessfully Connected to the server!\n");
+		cout << "Successfully Connected to the server!" << endl;
 
 		int loopthis = 1;
 		while (loopthis == 1) {
 
-			cout << "\nType to say: ";
+			cout << "Type to say: ";
 			cin.ignore();
 			getline(cin, sendbuf2);
 
@@ -201,7 +205,8 @@ void ChatClient(){
 				closesocket(ConnectSocket);
 				WSACleanup();
 			}
-			printf("Bytes Sent: %ld\n", iResult);
+			//printf("Bytes Sent: %ld\n", iResult);
+
 			if (strcmp(sendbuf2.c_str(), "exit") == 0) {
 				cout << "exiting...\n";
 				loopthis = 0;
@@ -212,17 +217,18 @@ void ChatClient(){
 			iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
 			if (iResult > 0)
 			{
-				printf("\nMsg Received :%s\n", recvbuf);
+				cout << endl;
+				cout << "Msg Received: " << recvbuf << endl;
 			}
 			else if (iResult == 0)
-				printf("Connection closed\n");
+				cout << "Connection closed" << endl;
 			else
-				printf("recv failed with error: %d\n", WSAGetLastError());
+				cout << "recv failed with error: " << WSAGetLastError() << endl;
 		}
 
 		iResult = shutdown(ConnectSocket, SD_SEND);
 		if (iResult == SOCKET_ERROR) {
-			printf("shutdown failed with error: %d\n", WSAGetLastError());
+			cout << "shutdown failed with error: " << WSAGetLastError() << endl;
 			closesocket(ConnectSocket);
 			WSACleanup();
 		}
@@ -230,6 +236,4 @@ void ChatClient(){
 		closesocket(ConnectSocket);
 		WSACleanup();
 	}
-	int ok;
-	cin >> ok;
 }
