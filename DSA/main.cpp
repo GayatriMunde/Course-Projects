@@ -4,23 +4,20 @@
 using namespace std; 
 
 int main(){
-    vector<int> values = {1, 2, 3, 4, 6, 7, 8};
+    vector<int> values = {8,10,12,14,15,16,17,18,20,21,22,23,25};
     BST<int> bst(values);
     bst.display();
-    bst.deleteNode(4);
+    bst.deleteNode(14);
     bst.display();
 
-    bst.deleteNode(3);
+    bst.deleteNode(18);
     bst.display();
 
-    bst.deleteNode(2);
+    bst.deleteNode(62);
     bst.display();
 
-    bst.deleteNode(10);
+    bst.has(12);
     bst.display();
-
-
-
 
     /*vector<int> a = {8, 0, 10};
     bst.insert(a);

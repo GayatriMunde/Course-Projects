@@ -5,17 +5,16 @@
 using namespace std;
 
 template <typename T>
-struct TreeNode{
-    T val;
-    TreeNode<T> *left;
-    TreeNode<T> *right;
-    TreeNode<T> () : val(0), left(nullptr), right(nullptr) {}
-    TreeNode<T> (T x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode<T> (T x, TreeNode<T> *left, TreeNode<T> *right) : val(x), left(left), right(right) {}
-};
-
-template <typename T>
 class BST{
+    struct TreeNode{
+        T val;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+        TreeNode<T> () : val(0), left(nullptr), right(nullptr) {}
+        TreeNode<T> (T x) : val(x), left(nullptr), right(nullptr) {}
+        TreeNode<T> (T x, TreeNode<T> *left, TreeNode<T> *right) : val(x), left(left), right(right) {}
+    };
+
     int height;
     struct TreeNode<T> *root;
 
@@ -67,7 +66,7 @@ class BST{
         height = 0;
     }
 
-    BST(T value, TreeNode<T> *left, TreeNode<T> *right){
+    BST(T value, TreeNode<T> *left = NULL, TreeNode<T> *right = NULL){
         root = new struct TreeNode<T> (value, left, right);
         height = getHeight(root);
     }
@@ -124,16 +123,20 @@ class BST{
             put(values[i], root);
     }
 
-    TreeNode<T> *Search(T num, TreeNode<T> *tempRoot = nullptr){
+    void insert(T value){
+        put(value, root);
+    }
+
+    bool has(T num, TreeNode<T> *tempRoot = nullptr){
         if (tempRoot == nullptr)
             tempRoot = root;
         if (num == tempRoot->val)
-            return tempRoot;
+            return true;
         else if (num < tempRoot->val && tempRoot->left != nullptr)
-            return Search(num, tempRoot->left);
+            return has(num, tempRoot->left);
         else if (num > tempRoot->val && tempRoot->right != nullptr)
-            return Search(num, tempRoot->right);
-        return NULL;
+            return has(num, tempRoot->right);
+        return false;
     }
 
     struct TreeNode<T> *helper(int val, TreeNode<T> *temp){
@@ -145,28 +148,16 @@ class BST{
                 delete(temp);
                 return NULL;
             }
-
             else{
-                struct TreeNode<T> *prev, *node = temp->left;
-                if (node->right){
-                    while(node->right){
-                        prev = node;
-                        node = node->right;
-                    }
-                    if(node->left)
-                        prev->right = node->left;
-                    else
-                        prev->right = NULL;
+                if(temp->left){
+                    T maximum = getMaximum(temp->left);
+                    temp->val = maximum;
+                    temp->left = helper(maximum, temp->left);
+                }else if(temp->right){
+                    T minimum = getMinimum(temp->right);
+                    temp->val = minimum;
+                    temp->right = helper(minimum, temp->right);
                 }
-                else{
-                    if (node->left)
-                        temp->left = node->left;
-                    else
-                        temp->left = NULL;
-                }
-                temp->val = node->val;
-                delete(node);
-                return temp;
             }
         }
 
