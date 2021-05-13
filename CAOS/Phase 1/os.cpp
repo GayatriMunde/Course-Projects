@@ -100,6 +100,7 @@ void load(){
     char temp[5];
     while(!fin.eof()){
         fin.getline(buffer,41);
+        memset(temp, '\0', 5);
         memcpy(temp,buffer,4);
         if(!strcmp(temp,"$AMJ"))
             init();
@@ -109,6 +110,14 @@ void load(){
             m = 0;
         else{
             strcpy(M[m],buffer);
+            for(int i=m; i<m+10; i++){
+                cout<<"M["<<i<<"] :";
+                for(int j=0 ; j<4; j++){
+                    cout<<M[i][j];
+                }
+                cout<<endl;
+            }
+            cout<<endl;
             m += 10;
         }
     }
