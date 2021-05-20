@@ -2,6 +2,11 @@
 
 using namespace std;
 
+bool is_digits(const string& str)
+{
+    return str.find_first_not_of("0123456789") == string::npos;
+}
+
 void Student::addStudent() {
     string name, branch;
     cout << endl << endl;
@@ -21,11 +26,11 @@ void Student::addStudent() {
 
     cout << "Enter Mobile Number: ";
     cin >> studContact;
-    /*while (to_string(studContact).length() != 10) {
+    while (studContact.length() != 10 && is_digits(studContact)) {
         cout << "Please enter valid number!!" << endl;
         cout << "Enter again: ";
         cin >> studContact;
-    }*/
+    }
 
     cout << "Student Added Successfully!" << endl;
     cout << endl << endl;
@@ -78,10 +83,15 @@ void modifyBranch(int id)
 
 void modifyContact(int id)
 {
-    int num;
+    string num;
     cout << "Enter new number: ";
     cin >> num;
-    updateStud(id, 2, to_string(num));
+    while (num.length() != 10 && is_digits(num)) {
+        cout << "Please enter valid number!!" << endl;
+        cout << "Enter again: ";
+        cin >> num;
+    }
+    updateStud(id, 2, num);
 }
 
 void modifyStudent(int id)
@@ -127,10 +137,11 @@ void insertIntoStudents(Student* student)
 
     string sql = "INSERT INTO Students VALUES(" + to_string(student->studId) +
         ",'" + student->studName + "','" + student->studBranch +
-        "'," + to_string(student->studContact) + ",0);";
+        "'," + student->studContact + ",0);";
     exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messaggeError);
     if (exit != SQLITE_OK) {
-        cerr << "Error Insert : " << messaggeError << endl;
+        //cerr << "Error Insert : " << messaggeError << endl;
+        cout << "Book with given id already exists!" << endl;
         sqlite3_free(messaggeError);
     }
     else
@@ -142,7 +153,7 @@ void insertIntoStudents(Student* student)
 static int callbackStud(void* unused, int count, char** data, char** colNames)
 {
     for (int i = 0; i < count; i++) {
-        cout << colNames[i] << " = " << data[i] << " ";
+        cout << colNames[i] << " = " << data[i] << ", ";
     }
     cout << endl;
 

@@ -139,7 +139,8 @@ void insertIntoBooks(Book* book)
         "'," + to_string(book->totalCount) + "," + to_string(book->totalCount) + ");";
     exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messaggeError);
     if (exit != SQLITE_OK) {
-        cerr << "Error Insert" << messaggeError << endl;
+        //cerr << "Error Insert" << messaggeError << endl;
+        cout << "Book with given id already exists!" << endl;
         sqlite3_free(messaggeError);
     }
     else
@@ -152,7 +153,7 @@ void insertIntoBooks(Book* book)
 static int callbackBooks(void* unused, int count, char** data, char** colNames)
 {
     for (int i = 0; i < count; i++) {
-        cout << colNames[i] << " = " << data[i];
+        cout << colNames[i] << " = " << data[i] << ", ";
     }
     cout << endl;
 

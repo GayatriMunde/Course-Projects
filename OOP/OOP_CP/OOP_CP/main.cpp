@@ -32,7 +32,10 @@ void adminMenu() {
     case 2:
         cout << "Enter the id: ";
         cin >> id;
-        displayStudents(id);
+        if (id > 0)
+            displayStudents(id);
+        else
+            cout << "Invalid id!" << endl;
         break;
     case 3:
         displayBooks();
@@ -40,27 +43,42 @@ void adminMenu() {
     case 4:
         cout << "Enter the id: ";
         cin >> id;
-        displayBooks(id);
+        if (id > 0)
+            displayBooks(id);
+        else
+            cout << "Invalid id!" << endl;
         break;
     case 5:
         cout << "Enter the id: ";
         cin >> id;
-        deleteStud(id);
+        if (id > 0)
+            deleteStud(id);
+        else
+            cout << "Invalid id!" << endl;
         break;
     case 6:
         cout << "Enter the id: ";
         cin >> id;
-        deleteBook(id);
+        if (id > 0)
+            deleteBook(id);
+        else
+            cout << "Invalid id!" << endl;
         break;
     case 7:
         cout << "Enter the id: ";
         cin >> id;
-        modifyBooks(id);
+        if (id > 0)
+            modifyBooks(id);
+        else
+            cout << "Invalid id!" << endl;
         break;
     case 8:
         cout << "Enter the id: ";
         cin >> id;
-        modifyStudent(id);
+        if (id > 0)
+            modifyStudent(id);
+        else
+            cout << "Invalid id!" << endl;
         break;
     case 9:
         addBook();
@@ -81,11 +99,23 @@ void adminMenu() {
 
 void bookIssue() {
     int studId, bookId;
-    cout << "Enter student Id: ";
-    cin >> studId;
+    while (true) {
+        cout << "Enter student Id: ";
+        cin >> studId;
+        if (studId > 0)
+            break;
+        else
+            cout << "Invalid id! Try again." << endl;
+    }
 
-    cout << "Enter book Id: ";
-    cin >> bookId;
+    while (true) {
+        cout << "Enter book Id: ";
+        cin >> bookId;
+        if (bookId > 0)
+            break;
+        else
+            cout << "Invalid id! Try again." << endl;
+    }
     
     sqlite3* DB;
     char* messaggeError;
@@ -119,11 +149,23 @@ void bookIssue() {
 
 void bookRemove() {
     int studId, bookId;
-    cout << "Enter student Id: ";
-    cin >> studId;
+    while (true) {
+        cout << "Enter student Id: ";
+        cin >> studId;
+        if (studId > 0)
+            break;
+        else
+            cout << "Invalid id! Try again." << endl;
+    }
 
-    cout << "Enter book Id: ";
-    cin >> bookId;
+    while (true) {
+        cout << "Enter book Id: ";
+        cin >> bookId;
+        if (bookId > 0)
+            break;
+        else
+            cout << "Invalid id! Try again." << endl;
+    }
     
     sqlite3* DB;
     char* messaggeError;

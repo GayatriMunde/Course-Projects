@@ -9,7 +9,7 @@ class Student {
     int studId;
     std::string studName;
     std::string studBranch;
-    long int studContact;
+    std::string studContact;
 
 public:
     void addStudent();
@@ -33,6 +33,9 @@ void addStudent();
 void modifyBranch(int id);
 void modifyContact(int id);
 void modifyStudent(int id);
+
+/*Checks string if string is numerical*/
+bool is_digits(const string& str);
 
 /*Database functions linked to Students table in Library Database*/
 static int callbackStud(void* unused, int count, char** data, char** colNames);
