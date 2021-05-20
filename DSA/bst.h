@@ -5,16 +5,17 @@
 using namespace std;
 
 template <typename T>
-class BST{
-    struct TreeNode{
-        T val;
-        TreeNode<T> *left;
-        TreeNode<T> *right;
-        TreeNode<T> () : val(0), left(nullptr), right(nullptr) {}
-        TreeNode<T> (T x) : val(x), left(nullptr), right(nullptr) {}
-        TreeNode<T> (T x, TreeNode<T> *left, TreeNode<T> *right) : val(x), left(left), right(right) {}
-    };
+struct TreeNode{
+    T val;
+    TreeNode<T> *left;
+    TreeNode<T> *right;
+    TreeNode<T> () : val(0), left(nullptr), right(nullptr) {}
+    TreeNode<T> (T x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode<T> (T x, TreeNode<T> *left, TreeNode<T> *right) : val(x), left(left), right(right) {}
+};
 
+template <typename T>
+class BST{
     int height;
     struct TreeNode<T> *root;
 
