@@ -1,3 +1,5 @@
+#ifndef BST_H
+#define BST_H
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -210,9 +212,4 @@ class BST{
     }
 
 };
-
-
-
-
-
- 
+#endif
