@@ -87,6 +87,16 @@ void execute_user_program(){
             memcpy(val, M[loc], 4);
             memcpy(R, to_string(stoi(R) + stoi(val)).c_str(), 4);
         }
+        else if(!strcmp(temp, "AN")){
+            char val[5];
+            memcpy(val, M[loc], 4);
+            memcpy(R, to_string(stoi(R) & stoi(val)).c_str(), 4);
+        }
+        else if(!strcmp(temp, "OR")){
+            char val[5];
+            memcpy(val, M[loc], 4);
+            memcpy(R, to_string(stoi(R) | stoi(val)).c_str(), 4);
+        }
         else if(!strcmp(temp, "GD"))
             mos(1, loc);
         else if(!strcmp(temp, "PD"))
